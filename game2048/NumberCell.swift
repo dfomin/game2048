@@ -16,6 +16,7 @@ class NumberCell {
     static var origin = CGPoint(x: 0, y: 0)
     static var cellSize = CGSize(width: 50, height: 50)
     static var border = CGFloat(1)
+    static var screenHeight = CGFloat(0)
     
     // MARK: - Properties
     
@@ -34,7 +35,7 @@ class NumberCell {
     // MARK: - Methods
     
     init(x: Int, y: Int) {
-        number = 1
+        number = 2
         self.x = x
         self.y = y
         
@@ -44,7 +45,20 @@ class NumberCell {
         configureLabel()
         
         let position = calculatePosition(x: x, y: y)
-        sprite.position = position
+        sprite.position = CGPoint(x: position.x, y: NumberCell.screenHeight - position.y)
+    }
+    
+    func updatePosition(newX: Int, newY: Int) {
+        x = newX
+        y = newY
+        
+        let position = calculatePosition(x: x, y: y)
+        let spritePosition = CGPoint(x: position.x, y: NumberCell.screenHeight - position.y)
+        sprite.position = spritePosition
+    }
+    
+    func updateNumber(newNumber: Int) {
+        number = newNumber
     }
     
     // MARK: - Private methods

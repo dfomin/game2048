@@ -10,6 +10,8 @@ import Foundation
 
 protocol NumberCellDelegate {
     
-    func onCellCreated(x: Int, y: Int)
-    func onCellMoved(from oldX: Int, and oldY: Int, to newX: Int, and newY: Int)
+    func onCellCreated(at index: Int)
+    func onCellMoved(from oldIndex: Int, to newIndex: Int)
+    func onNumberUp(at index: Int)
+    func onRemove(from oldIndex: Int, to newIndex: Int)
 }

@@ -41,6 +41,7 @@ class GameScene: SKScene, NumberCellDelegate {
         NumberCell.origin = origin
         NumberCell.cellSize = CGSize(width: cellWidth, height: cellHeight)
         NumberCell.border = border
+        NumberCell.screenHeight = view.bounds.height
         
         field = GameField(width: width, height: height, delegate: self)
     }
@@ -50,20 +51,78 @@ class GameScene: SKScene, NumberCellDelegate {
     
     // MARK: - NumberCellDelegate
     
-    func onCellCreated(x: Int, y: Int) {
+    func onCellCreated(at index: Int) {
+        let x = index % width
+        let y = index / width
+        
+        print("new \(x),\(y)")
+        
         let newCell = NumberCell(x: x, y: y)
-        fieldView[y * width + x] = newCell
+        fieldView[index] = newCell
         addChild(newCell.sprite)
+        
+        newCell.sprite.setScale(0.1)
+        newCell.sprite.run(SKAction.scale(to: 1, duration: 0.2))
     }
     
-    func onCellMoved(from oldX: Int, and oldY: Int, to newX: Int, and newY: Int) {
+    func onCellMoved(from oldIndex: Int, to newIndex: Int) {
+        let oldX = oldIndex % width
+        let oldY = oldIndex / width
+        let newX = newIndex % width
+        let newY = newIndex / width
         
+        print("move \(oldX),\(oldY) \(newX),\(newY)")
+        
+        let oldPosition = fieldView[oldIndex]!.sprite.position
+        
+        fieldView[newIndex] = fieldView[oldIndex]
+        fieldView[newIndex]!.updatePosition(newX: newX, newY: newY)
+        fieldView[oldIndex] = nil
+        
+        let newPosition = fieldView[newIndex]!.sprite.position
+        let sprite = fieldView[newIndex]!.sprite
+        
+        sprite.position = oldPosition
+        sprite.run(SKAction.move(to: newPosition, duration: 0.2))
+    }
+    
+    func onNumberUp(at index: Int) {
+        let x = index % width
+        let y = index / width
+        
+        print("up \(x),\(y)")
+        
+        fieldView[index]!.updateNumber(newNumber: field.numbers[index])
+    }
+    
+    func onRemove(from oldIndex: Int, to newIndex: Int) {
+        let oldX = oldIndex % width
+        let oldY = oldIndex / width
+        let newX = newIndex % width
+        let newY = newIndex / width
+        
+        print("remove \(oldX),\(oldY) \(newX),\(newY)")
+        
+        let sprite = fieldView[oldIndex]!.sprite
+        let oldPosition = sprite.position
+        fieldView[oldIndex]!.updatePosition(newX: newX, newY: newY)
+        let newPosition = sprite.position
+        sprite.position = oldPosition
+        sprite.run(SKAction.sequence([SKAction.move(to: newPosition, duration: 0.2), SKAction.removeFromParent()]))
     }
     
     // MARK: - Methods
     
     func swipe(_ direction: Direction) {
-        print(direction)
+        if field.check(direction: direction) {
+            field.move(direction: direction)
+            
+            if field.checkEnd() {
+                print("END")
+            } else {
+                field.createCell()
+            }
+        }
     }
     
     // MARK: - Private methods
