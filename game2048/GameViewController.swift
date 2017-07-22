@@ -11,12 +11,18 @@ import SpriteKit
 import GameplayKit
 
 class GameViewController: UIViewController {
+    
+    // MARK: - Private properties
+    
+    private var scene: GameScene!
+    
+    // MARK: - UIViewController
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            let scene = GameScene(size: view.bounds.size)
+            scene = GameScene(size: view.bounds.size)
             scene.scaleMode = .aspectFill
             view.presentScene(scene)
             
@@ -29,5 +35,23 @@ class GameViewController: UIViewController {
 
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+    
+    // MARK: - Actions
+    
+    @IBAction func onSwipeLeft(_ sender: UISwipeGestureRecognizer) {
+        scene.swipe(.left)
+    }
+    
+    @IBAction func onSwipeRight(_ sender: UISwipeGestureRecognizer) {
+        scene.swipe(.right)
+    }
+    
+    @IBAction func onSwipeUp(_ sender: UISwipeGestureRecognizer) {
+        scene.swipe(.up)
+    }
+    
+    @IBAction func onSwipeDown(_ sender: UISwipeGestureRecognizer) {
+        scene.swipe(.down)
     }
 }
