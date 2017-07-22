@@ -34,8 +34,8 @@ class NumberCell {
     
     // MARK: - Methods
     
-    init(x: Int, y: Int) {
-        number = 2
+    init(x: Int, y: Int, number: Int) {
+        self.number = number
         self.x = x
         self.y = y
         

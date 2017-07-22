@@ -44,6 +44,9 @@ class GameScene: SKScene, NumberCellDelegate {
         NumberCell.screenHeight = view.bounds.height
         
         field = GameField(width: width, height: height, delegate: self)
+        
+        field.createCell()
+        field.createCell()
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -57,7 +60,7 @@ class GameScene: SKScene, NumberCellDelegate {
         
         print("new \(x),\(y)")
         
-        let newCell = NumberCell(x: x, y: y)
+        let newCell = NumberCell(x: x, y: y, number: field.numbers[index])
         fieldView[index] = newCell
         addChild(newCell.sprite)
         
@@ -117,10 +120,9 @@ class GameScene: SKScene, NumberCellDelegate {
         if field.check(direction: direction) {
             field.move(direction: direction)
             
+            field.createCell()
             if field.checkEnd() {
                 print("END")
-            } else {
-                field.createCell()
             }
         }
     }

@@ -25,15 +25,6 @@ class GameField {
         self.delegate = delegate
         
         numbers = [Int](repeating: 0, count: width * height)
-        
-        let index1 = Int(arc4random_uniform(UInt32(width * height)))
-        var index2 = Int(arc4random_uniform(UInt32(width * height - 1)))
-        if index2 >= index1 {
-            index2 += 1
-        }
-        
-        createCell(index: index1)
-        createCell(index: index2)
     }
     
     func createCell() {
@@ -132,7 +123,7 @@ class GameField {
     }
     
     private func createCell(index: Int) {
-        numbers[index] = 2
+        numbers[index] = arc4random_uniform(4) == 0 ? 4 : 2
         
         delegate.onCellCreated(at: index)
     }
