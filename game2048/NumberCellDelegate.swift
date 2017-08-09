@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol NumberCellDelegate {
+protocol NumberCellDelegate: class {
     
     func onCellCreated(at index: Int)
     func onCellMoved(from oldIndex: Int, to newIndex: Int)

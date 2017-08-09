@@ -15,7 +15,7 @@ class GameField {
     private(set) var numbers: [Int]
     private var width: Int
     private var height: Int
-    private var delegate: NumberCellDelegate
+    private unowned var delegate: NumberCellDelegate
     
     // MARK: - Methods
     
